@@ -25,7 +25,7 @@ from folder:
       crontab -e
 
 
-then add below line in specific config      
+then add below line in specific config:      
 
     
 
