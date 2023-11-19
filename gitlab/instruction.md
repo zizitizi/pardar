@@ -1,51 +1,65 @@
 
 
-Here are the steps to install a simple GitLab CI using Docker Compose with mandatory options:
+We will start work on the installation by creating a dedicated directory in which we will store data and Gitlab configuration.
 
-1. Make sure you have Docker and Docker Compose installed. If not, follow the installation instructions from the official Docker documentation.
+> mkdir gitlab
+For convenience, we will also set an environment variable that will contain the path to our Gitlab directory:
 
-2. Create a directory to store GitLab CI configuration and data. You can use the following command to create a directory, for example, `/srv/gitlab`:
+> export GITLAB_HOME=$(pwd)/gitlab
+In the next step, we create the docker-compose.yml file with the following content:
 
-    ```bash    sudo mkdir -p /srv/gitlab    ```
 
-3. Create a Docker Compose configuration file `docker-compose.yml` and add the following content to the file:
+# docker-compose.yml
+version: '3.7'
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'localhost'
+    container_name: gitlab-ce
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost'
+    ports:
+      - '8080:80'
+      - '8443:443'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    networks:
+      - gitlab
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-runner    
+    restart: always
+    depends_on:
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - '$GITLAB_HOME/gitlab-runner:/etc/gitlab-runner'
+    networks:
+      - gitlab
 
-    ```yaml    version: '3'
-    services:
-      web:
-        image: 'gitlab/gitlab-ce:latest'
-        container_name: 'gitlab'
-        restart: always        hostname: 'your-gitlab-hostname'
-        environment:
-          GITLAB_OMNIBUS_CONFIG: |
-            external_url 'http://your-gitlab-hostname.com'
-            # Additional configuration options can be added here        ports:
-          - '80:80'
-          - '443:443'
-        volumes:
-          - '/srv/gitlab/config:/etc/gitlab'
-          - '/srv/gitlab/logs:/var/log/gitlab'
-          - '/srv/gitlab/data:/var/opt/gitlab'
-    ```
+networks:
+  gitlab:
+    name: gitlab-network
+This configuration defines what containers we want to run. In our case, it will be the GitLab service with one GitLab runner (a separate module for running CI / CD tasks).
 
-    In the above configuration, replace `your-gitlab-hostname` with your GitLab CI's domain name or IP address. You can modify other configuration options as needed.
 
-4. Start the GitLab CI service using Docker Compose:
+Gitlab installation
+Containers are started using the command:
 
-    ```bash
-    sudo docker-compose up -d    ```
+> docker-compose up -d
+Once launched, Docker will download GitLab and GitLab Runner images from the servers. On my computer it looked like this:
 
-    This will start the GitLab CI container and run it as a background service.
+Docker compose
+Docker compose
+To log in to GitLab for the first time, you need a temporary password, which is generated automatically during installation. We get the password using the command:
 
-5. Wait for a while until GitLab CI is fully started. You can check the status of the container using the following command:
+> docker exec -it gitlab-ce grep 'Password:' /etc/gitlab/initial_root_password
+GitLab launching
+Our GitLab is available at: http://localhost:8080. After going to this address, the following screen should appear:
 
-    ```bash    sudo docker-compose ps
-    ```
 
-    Once the container's status is displayed as "Up," it means GitLab CI has been successfully started.
 
-6. Open a browser and visit the GitLab CI domain name or IP address you defined in the configuration file (e.g., http://your-gitlab-hostname.com). You should be able to access the GitLab CI web interface and set up the admin password as prompted.
-
-7. After logging in to GitLab CI, you can create projects, configure CI/CD pipelines, and further customize and configure based on your needs.
-
-This is a basic installation process, and you can customize GitLab CI further according to your requirements. Note that considerations such as security and backup are crucial and depend on your deployment environment and needs. Ensure regular backups of GitLab CI data to prevent data loss.
