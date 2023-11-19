@@ -20,6 +20,8 @@ from production to test backup and test process develop
 
 from folder:
 
+      crontab -e
+
                         0 5 * * 1 tar -zcf /var/backups/home.tgz /home/  - get backup from /home and make tar file in directory /var/backups/home.tgz
 
 from container:
