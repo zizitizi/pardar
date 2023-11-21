@@ -77,3 +77,18 @@ Our GitLab is available at: http://localhost:8080. After going to this address, 
 
 This is a basic installation process, and you can customize GitLab CI further according to your requirements. Note that considerations such as security and backup are crucial and depend on your deployment environment and needs. Ensure regular backups of GitLab CI data to prevent data loss.
 
+
+
+if you can not access :
+
+docker exec -it gitlab-ce grep 'Password:' /etc/gitlab/initial_root_password
+
+
+then go into gitlab container with bash then:
+
+gitlab-rake "gitlab:password:reset"
+
+
+then user root change password with 8 character. then reset container.
+
+
