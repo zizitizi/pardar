@@ -13,48 +13,48 @@ For convenience, we can also set an environment variable that will contain the p
 In the next step, we create the docker-compose.yml file with the following content:
 
       
-      # docker-compose.yml
-version: '3.7'
-services:
-  web:
-    image: 'gitlab/gitlab-ce:latest'
-    restart: always
-    hostname: 'localhost'
-    container_name: gitlab-ce
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.44.136:8080'
-        nginx['listen_port'] = 8080
-        nginx['listen_https'] = false
-
-    ports:
-      - '8080:80'
-      - '8443:443'
-    volumes:
-      - '/home/zizi/gitlab/config:/etc/gitlab'
-      - '/home/zizi/gitlab/logs:/var/log/gitlab'
-      - '/home/zizi/gitlab/data:/var/opt/gitlab'
-    networks:
-      - gitlab
-
-
-  gitlab-runner:
-    image: gitlab/gitlab-runner:alpine
-    container_name: gitlab-runner
-    restart: always
-    depends_on:
-      - web
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - '/home/zizi/gitlab/gitlab-runner:/etc/gitlab-runner'
-    networks:
-      - gitlab
-
-networks:
-  gitlab:
-    name: gitlab-network
-~
-   
+                        # docker-compose.yml
+                  version: '3.7'
+                  services:
+                    web:
+                      image: 'gitlab/gitlab-ce:latest'
+                      restart: always
+                      hostname: 'localhost'
+                      container_name: gitlab-ce
+                      environment:
+                        GITLAB_OMNIBUS_CONFIG: |
+                          external_url 'http://192.168.44.136:8080'
+                          nginx['listen_port'] = 8080
+                          nginx['listen_https'] = false
+                  
+                      ports:
+                        - '8080:80'
+                        - '8443:443'
+                      volumes:
+                        - '/home/zizi/gitlab/config:/etc/gitlab'
+                        - '/home/zizi/gitlab/logs:/var/log/gitlab'
+                        - '/home/zizi/gitlab/data:/var/opt/gitlab'
+                      networks:
+                        - gitlab
+                  
+                  
+                    gitlab-runner:
+                      image: gitlab/gitlab-runner:alpine
+                      container_name: gitlab-runner
+                      restart: always
+                      depends_on:
+                        - web
+                      volumes:
+                        - /var/run/docker.sock:/var/run/docker.sock
+                        - '/home/zizi/gitlab/gitlab-runner:/etc/gitlab-runner'
+                      networks:
+                        - gitlab
+                  
+                  networks:
+                    gitlab:
+                      name: gitlab-network
+                  ~
+                     
 
 
 This configuration defines what containers we want to run. In our case, it will be the GitLab service with one GitLab runner (a separate module for running CI / CD tasks).
