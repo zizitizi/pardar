@@ -7,28 +7,34 @@ services:
     container_name: gitlab-ce
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://localhost'
+        external_url 'http://192.168.44.136:8080'
+        nginx['listen_port'] = 8080
+        nginx['listen_https'] = false
+
     ports:
       - '8080:80'
       - '8443:443'
     volumes:
-      - '$GITLAB_HOME/config:/etc/gitlab'
-      - '$GITLAB_HOME/logs:/var/log/gitlab'
-      - '$GITLAB_HOME/data:/var/opt/gitlab'
+      - '/home/zizi/gitlab/config:/etc/gitlab'
+      - '/home/zizi/gitlab/logs:/var/log/gitlab'
+      - '/home/zizi/gitlab/data:/var/opt/gitlab'
     networks:
       - gitlab
+
+
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
-    container_name: gitlab-runner    
+    container_name: gitlab-runner
     restart: always
     depends_on:
       - web
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - '$GITLAB_HOME/gitlab-runner:/etc/gitlab-runner'
+      - '/home/zizi/gitlab/gitlab-runner:/etc/gitlab-runner'
     networks:
       - gitlab
 
 networks:
   gitlab:
     name: gitlab-network
+~
