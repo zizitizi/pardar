@@ -5,7 +5,7 @@ We will start work on the installation by creating a dedicated directory in whic
 > mkdir gitlab
 
 
-For convenience, we will also set an environment variable that will contain the path to our Gitlab directory:
+For convenience, we can also set an environment variable that will contain the path to our Gitlab directory: but i do simple way
 
 > export GITLAB_HOME=$(pwd)/gitlab
 
