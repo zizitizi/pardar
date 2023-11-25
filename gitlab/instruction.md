@@ -12,6 +12,14 @@ For convenience, we can also set an environment variable that will contain the p
 
 In the next step, we create the docker-compose.yml file with the following content:
 
+I'm using Gitlab 7.5.3 omnibus 5.2.1 ci on Debian Squeeze. To change the default port for nginx add the _gitlab_port_ to /etc/gitlab/gitlab.rb:
+
+My /etc/gitlab/gitlab.rb:
+
+external_url = 'gitlab.example.org'
+gitlab_rails['gitlab_port'] = 12345
+After changing the port, you have to call gitlab-ctl reconfigure and gitlab-ctl restart in your command line.
+
       
                         # docker-compose.yml
                   version: '3.7'
@@ -23,9 +31,8 @@ In the next step, we create the docker-compose.yml file with the following conte
                       container_name: gitlab-ce
                       environment:
                         GITLAB_OMNIBUS_CONFIG: |
-                          external_url 'http://192.168.44.136:8080'
-                          nginx['listen_port'] = 8080
-                          nginx['listen_https'] = false
+                          external_url 'http://192.168.44.136'
+                          gitlab_rails['gitlab_port'] = 8080
                   
                       ports:
                         - '8080:80'
