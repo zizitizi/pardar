@@ -25,7 +25,7 @@ After changing the port, you have to call gitlab-ctl reconfigure and gitlab-ctl 
                   version: '3.6'
                   services:
                     web:
-                      image: 'gitlab/gitlab-ee:latest'
+                      image: 'gitlab/gitlab-ce:latest'
                       restart: always
                       hostname: 'gitlab.example.com'
                       environment:
