@@ -22,46 +22,25 @@ After changing the port, you have to call gitlab-ctl reconfigure and gitlab-ctl 
 
       
                         # docker-compose.yml
-                  version: '3.7'
+                  version: '3.6'
                   services:
                     web:
-                      image: 'gitlab/gitlab-ce:latest'
+                      image: 'gitlab/gitlab-ee:latest'
                       restart: always
-                      hostname: 'localhost'
-                      container_name: gitlab-ce
+                      hostname: 'gitlab.example.com'
                       environment:
                         GITLAB_OMNIBUS_CONFIG: |
-                          external_url 'http://192.168.44.136'
-                          gitlab_rails['gitlab_port'] = 8080
-                  
+                          external_url 'http://gitlab.example.com:8929'
+                          gitlab_rails['gitlab_shell_ssh_port'] = 2224
                       ports:
-                        - '8080:80'
-                        - '8443:443'
+                        - '8929:8929'
+                        - '2224:22'
                       volumes:
-                        - '/home/zizi/gitlab/config:/etc/gitlab'
-                        - '/home/zizi/gitlab/logs:/var/log/gitlab'
-                        - '/home/zizi/gitlab/data:/var/opt/gitlab'
-                      networks:
-                        - gitlab
-                  
-                  
-                    gitlab-runner:
-                      image: gitlab/gitlab-runner:alpine
-                      container_name: gitlab-runner
-                      restart: always
-                      depends_on:
-                        - web
-                      volumes:
-                        - /var/run/docker.sock:/var/run/docker.sock
-                        - '/home/zizi/gitlab/gitlab-runner:/etc/gitlab-runner'
-                      networks:
-                        - gitlab
-                  
-                  networks:
-                    gitlab:
-                      name: gitlab-network
-                  ~
-                     
+                        - '$GITLAB_HOME/config:/etc/gitlab'
+                        - '$GITLAB_HOME/logs:/var/log/gitlab'
+                        - '$GITLAB_HOME/data:/var/opt/gitlab'
+                      shm_size: '256m'
+                                       
 
 
 This configuration defines what containers we want to run. In our case, it will be the GitLab service with one GitLab runner (a separate module for running CI / CD tasks).
