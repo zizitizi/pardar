@@ -178,13 +178,31 @@ root@zizi:/var/lib/docker/volumes# chmod -R 777 proj_odoo-db-data/
 
 
 
+ERROR: Job failed: prepare environment: exit status 1. Check https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading for more information
 
 
 
+
+
+
+
+ go to /home/gitlab-runner/.bash_logout  :
+
+ 
+                  At last, open .bash_logout file and comment out all lines and save it.
+                  
+                   $ vim /var/lib/gitlab-runner/.bash_logout
+                   # ~/.bash_logout: executed by bash(1) when login shell exits.
+                  
+                   # when leaving the console clear the screen to increase privacy
+                  
+                   #if [ "$SHLVL" = 1 ]; then
+                   #    [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+                   #fi
+                  
 
 # works
 
 install gitlab to write pipe line.
-
 
 
