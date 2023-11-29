@@ -96,18 +96,6 @@ git remote set-url origin git@<gitlab-server>:<username>/<project>.git.
 
 
 
-if you can not access :
-
-docker exec -it gitlab-ce grep 'Password:' /etc/gitlab/initial_root_password
-
-
-then go into gitlab container with bash then:
-
-gitlab-rake "gitlab:password:reset"
-
-
-then user root change password with 8 character. then reset container.
-
 --------------------------
 
  add specifeid user and gruop to your repo in admin area first
@@ -130,4 +118,20 @@ Create a new GitLab SSH key
 Paste the public key in as the value and set an expiration date
 Copy the SSH URL of the GitLab repo you wish to clone
 Issue a git clone command with the SSH URL
+
+
+### gitlab first time login pass :
+
+
+if you can not access :
+
+docker exec -it gitlab-ce grep 'Password:' /etc/gitlab/initial_root_password
+
+
+then go into gitlab container with bash then:
+
+gitlab-rake "gitlab:password:reset"
+
+
+then user root change password with 8 character. then reset container.
 
