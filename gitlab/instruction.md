@@ -108,6 +108,9 @@ git remote add origin <remote repository URL>: connect to repo  - url that land 
 git push -u origin master: send change to repo use -uf to force
 
 
+git remote set-url origin ssh://git@192.168.44.136:2224/pardar/pardar.git
+
+
 ## GitLab SSH key configuration steps
 The steps to follow to configure GitLab SSH keys for secure Git connections are as follows:
 
