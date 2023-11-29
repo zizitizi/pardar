@@ -116,7 +116,7 @@ then user root change password with 8 character. then reset container.
 git init: start
 git add .: add to coomit stage
 git commit -m "Initial commit": commit change
-git remote add origin <remote repository URL>: connect to repo
+git remote add origin <remote repository URL>: connect to repo  - url that land in clone with ssh section
 git push -u origin master: send change to repo use -uf to force
 
 
