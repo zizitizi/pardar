@@ -120,3 +120,14 @@ git remote add origin <remote repository URL>: connect to repo  - url that land 
 git push -u origin master: send change to repo use -uf to force
 
 
+## GitLab SSH key configuration steps
+The steps to follow to configure GitLab SSH keys for secure Git connections are as follows:
+
+Create an SSH key pair on your personal computer
+Copy the value of the public SSH key
+Log into GitLab and navigate to your account’s Preferences tab
+Create a new GitLab SSH key
+Paste the public key in as the value and set an expiration date
+Copy the SSH URL of the GitLab repo you wish to clone
+Issue a git clone command with the SSH URL
+
