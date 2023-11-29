@@ -69,6 +69,31 @@ Our GitLab is available at: http://localhost:8080. After going to this address, 
 
 This is a basic installation process, and you can customize GitLab CI further according to your requirements. Note that considerations such as security and backup are crucial and depend on your deployment environment and needs. Ensure regular backups of GitLab CI data to prevent data loss.
 
+##  ssh to container to avoid user name and password asking in pull and push and...
+
+
+make sure in docker compose to install open ssh server and permit root login yes:
+
+Update the package list: Run the command apt-get update to update the package list inside the container.
+
+Install SSH: Run the command apt-get install -y openssh-server to install the SSH server package.
+
+Configure SSH: Edit the SSH server configuration file /etc/ssh/sshd_config to configure the SSH server. For example, you can set the PermitRootLogin option to yes to allow root login via SSH.
+
+Start the SSH service: Run the command service ssh start or /etc/init.d/ssh start to start the SSH service inside the container.
+
+Generate a new SSH key pair by running the command ssh-keygen without specifying a filename. Press Enter to accept the default file location (/home/zizi/.ssh/id_rsa) and an empty passphrase, or provide a passphrase if desired.
+
+After generating the SSH key pair, you should have two files: id_rsa (private key) and id_rsa.pub (public key) in the /home/zizi/.ssh/ directory.
+
+To copy the public key to the container, use the following command: ssh-copy-id -i ~/.ssh/id_rsa.pub root@172.23.0.2.
+
+
+git remote set-url origin git@<gitlab-server>:<username>/<project>.git.
+
+
+
+
 
 
 if you can not access :
