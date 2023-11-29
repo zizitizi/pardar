@@ -83,4 +83,15 @@ gitlab-rake "gitlab:password:reset"
 
 then user root change password with 8 character. then reset container.
 
+--------------------------
+
+ add specifeid user and gruop to your repo in admin area first
+
+
+git init: start
+git add .: add to coomit stage
+git commit -m "Initial commit": commit change
+git remote add origin <remote repository URL>: connect to repo
+git push -u origin master: send change to repo use -uf to force
+
 
