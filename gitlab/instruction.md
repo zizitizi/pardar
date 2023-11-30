@@ -123,6 +123,13 @@ Copy the SSH URL of the GitLab repo you wish to clone
 Issue a git clone command with the SSH URL
 
 
+
+related usefull url:
+
+https://virgool.io/@aminkt/%DA%86%DA%AF%D9%88%D9%86%D9%87-%D9%BE%D8%B1%D9%88%DA%98%D9%87-vuejs-%D8%AE%D9%88%D8%AF-%D8%B1%D8%A7-%D8%A8%D8%A7-%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D9%87-%D8%A7%D8%B2-ssh-%D9%88-gitlab-%D8%A8%D8%B1-%D8%B1%D9%88%DB%8C-%D8%B3%D8%B1%D9%88%D8%B1-deploy-%DA%A9%D9%86%DB%8C%D9%85-f0vr9ancpbhh
+https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-configure-GitLab-SSH-keys-for-secure-Git-connections
+
+
 ### gitlab first time login pass :
 
 
