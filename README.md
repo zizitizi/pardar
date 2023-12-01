@@ -172,9 +172,13 @@ from test to production
 
 its importan to give permission to volume folder :
 
- chmod -R 777 proj_odoo-web-data/
-root@zizi:/var/lib/docker/volumes# chmod -R 777 proj_odoo-db-data/
+cd /var/lib/docker/volumes 
 
+chmod -R 777 proj_odoo-web-data/
+
+chmod -R 777 proj_odoo-db-data/
+
+chmod 777 -R proj/
 
 
 
