@@ -169,6 +169,11 @@ Open your .gitlab-ci.yml file.
 Replace $DOCKER_USERNAME and $DOCKER_PASSWORD with the actual environment variable names, e.g., ${DOCKER_USERNAME} and ${DOCKER_PASSWORD}.
 That's it! Now your GitLab project is connected to Docker Hub, and the environment variables are set for your pipeline to authenticate and push the image to Docker Hub.
 
+ script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+
+
 
 
 
