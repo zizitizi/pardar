@@ -145,3 +145,30 @@ gitlab-rake "gitlab:password:reset"
 
 then user root change password with 8 character. then reset container.
 
+
+
+
+### docker login
+
+Here are the steps to connect your GitLab project to Docker Hub and set the environment variables:
+
+Step 1: Connect your GitLab project to Docker Hub:
+
+Go to your GitLab project page.
+Click on "Settings" in the left sidebar.
+Select "CI/CD" from the dropdown menu.
+Scroll down to the "Variables" section.
+Click on "Add Variable".
+Set the key as DOCKER_USERNAME and the value as your Docker Hub username.
+Click on "Add Variable" again.
+Set the key as DOCKER_PASSWORD and the value as your Docker Hub password or access token.
+Click on "Save changes".
+Step 3: Set the environment variables:
+
+Open your .gitlab-ci.yml file.
+Replace $DOCKER_USERNAME and $DOCKER_PASSWORD with the actual environment variable names, e.g., ${DOCKER_USERNAME} and ${DOCKER_PASSWORD}.
+That's it! Now your GitLab project is connected to Docker Hub, and the environment variables are set for your pipeline to authenticate and push the image to Docker Hub.
+
+
+
+
