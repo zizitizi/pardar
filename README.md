@@ -180,9 +180,13 @@ chmod -R 777 proj_odoo-db-data/
 
 chmod 777 -R proj/
 
+chown -R root:root proj_odoo-web-data/ proj_odoo-db-data/
 
 
-ERROR: Job failed: prepare environment: exit status 1. Check https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading for more information
+
+
+
+#### ERROR: Job failed: prepare environment: exit status 1. Check https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading for more information
 
 
 
