@@ -6,6 +6,9 @@ stages:
   - deploy
 
 
+# we have 2 local vm1,vm2 for dev and test env. and 1 virtual online server host for prod r deploy
+
+
 dev_backup_prod:
   stage: dev
   tags:
@@ -20,7 +23,7 @@ dev_backup_prod:
 
     - ssh -p 22 ansible@192.168.44.150 'sudo /etc/cron.daily/folderbackup.sh'  
 
-# need to filter 3 last .gz file 
+              # need to filter 3 last .gz file 
 
     - scp -P 22 ansible@192.168.44.150:/var/backups/backup* /home/ansible/backuppardar
 
@@ -39,57 +42,51 @@ dev_gitpush:
   
   script:
 
-
-      
-      # make your changes
+ 
+        # make your changes
      - cd /home/zizi/proj
      - echo $CI_COMMIT_REF_NAME
      - pwd
      - whoami
      - git pull
-
      - git status
      - su - zizi
-
-     - whoami
-       # push changes
+        # push changes
      
      - |-
         # Check if we have modifications to commit
         CHANGES=$(git status --porcelain | wc -l)
 
         if [ "$CHANGES" -gt "0" ]; then
-        # Show the status of files that are about to be created, updated or deleted
+          # Show the status of files that are about to be created, updated or deleted
           git status
 
-        # Commit all changes
+          # Commit all changes
           git commit -m "${COMMIT_MESSAGE}"
 
-        # Update the repository and make sure to skip the pipeline create for this commit
+          # Update the repository and make sure to skip the pipeline create for this commit
           git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
 
-         # always return true so that the build does not fail if there are no changes
-         #git push origin ci_processing:${CI_COMMIT_REF_NAME} || true
+          # always return true so that the build does not fail if there are no changes
+          #git push origin ci_processing:${CI_COMMIT_REF_NAME} || true
         fi
   before_script:
-    # Clone the repository via HTTPS inside a new directory
+        # Clone the repository via HTTPS inside a new directory
     - git clone "https://${GITLAB_USERNAME}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
 
       # for your information
       #  - whoami
       # - printenv
       #   - cd /home/zizi/proj
-      # we need to extract the ssh/git URL as the runner uses a tokenized URL
+      #   we need to extract the ssh/git URL as the runner uses a tokenized URL
       #  - export CI_PUSH_REPO=`echo $CI_REPOSITORY_URL | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
-
       # runner runs on a detached HEAD, create a temporary local branch for editing
       # - git checkout -b ci_processing
       #- git config --global user.name "zein.tiz"
       #- git config --global user.email "zein_tiz@yahoo.com"
       #- git remote set-url --push origin "${CI_PUSH_REPO}"
-
-
-    # Set the displayed user with the commits that are about to be made
+      # Set the displayed user with the commits that are about to be made
+      
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
 
@@ -128,8 +125,7 @@ dev_dockerpush_to_hub:
         echo "Error occurred while removing."
         #   exit 1
         #  else
-        # Remove all .tar files if untar was successful
-        #    find /home/ansible/backuppardar -type f -name "*.tar" -delete
+        echo "was successful" 
       fi
     
 
