@@ -1,31 +1,173 @@
-stages:          # List of stages for jobs, and their order of execution
-  - build
+
+
+stages:
+  - dev
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+dev_backup_prod:
+  stage: dev
+  tags:
+    - zizi
+  when : manual  
+  
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    
+    - su - ansible
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - ssh -p 22 ansible@192.168.44.150 '/etc/cron.daily/conbackup.sh'  
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
+    - ssh -p 22 ansible@192.168.44.150 'sudo /etc/cron.daily/folderbackup.sh'  
+
+# need to filter 3 last .gz file 
+
+    - scp -P 22 ansible@192.168.44.150:/var/backups/backup* /home/ansible/backuppardar
+
+
+  
+
+
+
+
+
+dev_gitpush:
+  stage: dev
+  tags:
+    - zizi
+  when : manual  
+  
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+
+
+      
+      # make your changes
+     - cd /home/zizi/proj
+     - echo $CI_COMMIT_REF_NAME
+     - pwd
+     - whoami
+     - git pull
+
+     - git status
+     - su - zizi
+
+     - whoami
+       # push changes
+     
+     - |-
+        # Check if we have modifications to commit
+        CHANGES=$(git status --porcelain | wc -l)
+
+        if [ "$CHANGES" -gt "0" ]; then
+        # Show the status of files that are about to be created, updated or deleted
+          git status
+
+        # Commit all changes
+          git commit -m "${COMMIT_MESSAGE}"
+
+        # Update the repository and make sure to skip the pipeline create for this commit
+          git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
+
+         # always return true so that the build does not fail if there are no changes
+         #git push origin ci_processing:${CI_COMMIT_REF_NAME} || true
+        fi
+  before_script:
+    # Clone the repository via HTTPS inside a new directory
+    - git clone "https://${GITLAB_USERNAME}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
+
+      # for your information
+      #  - whoami
+      # - printenv
+      #   - cd /home/zizi/proj
+      # we need to extract the ssh/git URL as the runner uses a tokenized URL
+      #  - export CI_PUSH_REPO=`echo $CI_REPOSITORY_URL | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
+
+      # runner runs on a detached HEAD, create a temporary local branch for editing
+      # - git checkout -b ci_processing
+      #- git config --global user.name "zein.tiz"
+      #- git config --global user.email "zein_tiz@yahoo.com"
+      #- git remote set-url --push origin "${CI_PUSH_REPO}"
+
+
+    # Set the displayed user with the commits that are about to be made
+    - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
+
+
+
+
+
+dev_dockerpush_to_hub:
+  stage: dev
+  tags:
+    - zizi
+  when : manual  
+  
+  script:
+
+
+    - |
+      set -e  # Enable error handling
+
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      docker rmi zeintiz/pardar:pardardb
+      docker rmi zeintiz/pardar:pardarweb
+
+
+      docker commit proj-web-1 proj-web
+      docker tag proj-web zeintiz/pardar:pardarweb
+      docker push zeintiz/pardar:pardarweb
+
+
+      docker commit proj-db-1 proj-db
+      docker tag proj-db zeintiz/pardar:pardardb
+      docker push zeintiz/pardar:pardardb
+    - |
+      if [ $? -ne 0 ]; then
+        echo "Error occurred while removing."
+        #   exit 1
+        #  else
+        # Remove all .tar files if untar was successful
+        #    find /home/ansible/backuppardar -type f -name "*.tar" -delete
+      fi
+    
+
+
+
+    
+test_compose_up:
+  stage: test
+  tags:
+    - zizi51
+  when : manual  
+    
+  script:
+    - echo "Pulling the latest changes from GitLab..."
+    - git pull origin main
+    - echo "Bringing down the existing containers..."
+    - docker compose down
+    - echo " delete old image from local"
+    - docker rmi zeintiz/pardar:pardardb
+    - docker rmi zeintiz/pardar:pardarweb
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - cd /home/zizi/pardar
+    - echo "Bringing up the application with the new image..."
+    - docker compose up -d
+
+
+deploy_toupdate:
+
+  stage: deploy
+
+  tags:
+    - zizi
+
+  when : manual  
+
+  script:
+    - echo "Running command in deploy environment"
+    - su - ansible
+    - scp -P 22 /home/zizi/proj/addons ansible@192.168.44.150:/zizi/proj/addons
+    - ssh -p 22 ansible@192.168.44.150 'cd /root/proj' ; 'docker rmi zeintiz/pardar:pardardb' ; 'docker rmi zeintiz/pardar:pardarweb' , 'docker compose up -d '
+
