@@ -175,5 +175,16 @@ That's it! Now your GitLab project is connected to Docker Hub, and the environme
 
 
 
+#### refrence:
+
+https://www.drupal.org/docs/develop/git/using-gitlab-to-contribute-to-drupal/gitlab-ci
+
+
+https://xebia.com/blog/how-to-update-your-repository-from-a-gitlab-pipeline/
+
+
+
+https://copyprogramming.com/howto/how-do-i-push-to-a-repo-from-within-a-gitlab-ci-pipeline
+
 
 
