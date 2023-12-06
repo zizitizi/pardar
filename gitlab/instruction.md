@@ -101,11 +101,11 @@ git remote set-url origin git@<gitlab-server>:<username>/<project>.git.
  add specifeid user and gruop to your repo in admin area first
 
 
-git init: start
-git add .: add to coomit stage
-git commit -m "Initial commit": commit change
-git remote add origin <remote repository URL>: connect to repo  - url that land in clone with ssh section
-git push -u origin master: send change to repo use -uf to force
+                  git init: start
+                  git add .: add to coomit stage
+                  git commit -m "Initial commit": commit change
+                  git remote add origin <remote repository URL>: connect to repo  - url that land in clone with ssh section
+                  git push -u origin master: send change to repo use -uf to force
 
 
 git remote set-url origin ssh://git@192.168.44.136:2224/pardar/pardar.git
@@ -185,6 +185,55 @@ https://xebia.com/blog/how-to-update-your-repository-from-a-gitlab-pipeline/
 
 
 https://copyprogramming.com/howto/how-do-i-push-to-a-repo-from-within-a-gitlab-ci-pipeline
+
+
+# git commands
+
+after make user name and password and email in gitlab.
+
+in local git :
+
+git config --global user.name "Mona.Lisa"
+
+git config --global user.email "Mona.Lisa@gmail.com"
+
+verfiy ssh add:
+
+ssh-add -l
+
+eval "$(ssh-agent -s)"
+
+
+
+git remote add origin ssh://git@192.168.44.136:2224/pardar/pardar.git
+
+git remote -v
+
+
+git remote set-url origin ssh://git@192.168.44.136:2224/pardar/pardar.git
+
+git pull
+
+git pull ssh://git@192.168.44.136:2224/pardar/pardar.git main
+
+git config pull.rebase true
+
+git pull ssh://git@192.168.44.136:2224/pardar/pardar.git main
+
+ vi docker-compose.yml
+ 
+git add docker-compose.yml
+
+git rebase --continue
+
+git pull ssh://git@192.168.44.136:2224/pardar/pardar.git main
+
+     If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> main
+
+
+ll
 
 
 
