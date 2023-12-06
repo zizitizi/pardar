@@ -203,6 +203,9 @@ ssh-add -l
 
 eval "$(ssh-agent -s)"
 
+if not:
+
+ssh-add zizi@zizi  - Replace zizi@zizi with the correct path and filename of your SSH private key.
 
 
 git remote add origin ssh://git@192.168.44.136:2224/pardar/pardar.git
