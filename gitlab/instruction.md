@@ -1,6 +1,10 @@
 gitlab yaml syntax:
 https://docs.gitlab.com/ee/ci/yaml/index.html
 
+https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+
+
+
 # this config works for me perfectly
 
 We will start work on the installation by creating a dedicated directory in which we will store data and Gitlab configuration.
