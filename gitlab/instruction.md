@@ -251,54 +251,63 @@ ll
 If you want to transfer changes from a branch to the main branch in Git, you can use the following steps:
 
 Checkout the main branch:
-shell
-Copy
+
 git checkout main
+
 Merge the branch into the main branch:
-shell
-Copy
+
+
+
 git merge <branch-name>
+
 Replace <branch-name> with the name of the branch containing the changes you want to transfer.
 
 Resolve any merge conflicts that occur during the merge process. If there are conflicts, you will need to manually resolve them.
 
 Once the conflicts are resolved, commit the changes:
 
-shell
-Copy
+
 git commit -m "Merge branch <branch-name> into main"
+
 Replace <branch-name> with the name of the branch you are merging.
 
 Push the changes to the remote repository:
-shell
-Copy
+
+
 git push origin main
+
 After following these steps, the changes from the branch should be merged into the main branch, and the changes will be transferred.
 
-git merge newbl fatal: refusing to merge unrelated histories
+if u encounterd this error: git merge newbl fatal: refusing to merge unrelated histories
 The error message "fatal: refusing to merge unrelated histories" typically occurs when you try to merge two branches that have diverged and don't share a common commit history. To resolve this issue, you can use the --allow-unrelated-histories flag to force the merge of unrelated branches. Here's how you can do it:
 
 Checkout the branch you want to merge into:
-shell
-Copy
+
+
+
 git checkout main
+
 Merge the other branch into the main branch with the --allow-unrelated-histories flag:
-shell
-Copy
+
+
+
 git merge --allow-unrelated-histories newbl
+
 Replace newbl with the name of the branch you want to merge.
 
 Resolve any merge conflicts that occur during the merge process. If there are conflicts, you will need to manually resolve them.
 
 Once the conflicts are resolved, commit the changes:
 
-shell
-Copy
+
+
 git commit -m "Merge branch newbl into main"
+
 Push the changes to the remote repository:
-shell
-Copy
+
+
 git push origin main
+
 By using the --allow-unrelated-histories flag, you should be able to merge the unrelated branches and transfer the changes to the main branch.
 
 
