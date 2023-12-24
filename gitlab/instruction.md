@@ -222,6 +222,9 @@ if not:
 ssh-add zizi@zizi  - Replace zizi@zizi with the correct path and filename of your SSH private key.
 
 
+ssh-add ~/.ssh/id_rsa
+
+
 git remote add origin ssh://git@192.168.44.136:2224/pardar/pardar.git
 
 git remote -v
