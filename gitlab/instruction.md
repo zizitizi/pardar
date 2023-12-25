@@ -1,3 +1,8 @@
+first of all try to run CI/CD pipeline manual after it run this ci/cd pipeline in gitlab
+
+then upload proj in  gitlab to push and pull then in develop environment make code change after it ipeline triggers aoutomatically. but for firat time test for ci/cd push and pull form dev to git then in test environmet rm -rf old one and clone agian or pull th e project. for copy docker volume data use scp and cp for test scp . make sure to clean old one and copy new again and dont forget to give proper permission. after every change just need to pulll and replace data completly.
+
+
 gitlab yaml syntax:
 https://docs.gitlab.com/ee/ci/yaml/index.html
 
